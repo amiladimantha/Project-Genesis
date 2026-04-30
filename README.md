@@ -79,14 +79,16 @@ npm run dev
 
 ## Supabase Setup
 
-This app expects these tables in the `public` schema:
+Run [SCHEMA.sql](SCHEMA.sql) in your Supabase SQL Editor. It creates all tables, indexes, RLS policies, triggers, and RPC functions needed by the app:
 
-- `profiles`
-- `categories`
-- `subscriptions`
-- `transactions`
+- `profiles` — user accounts (auto-created on signup via trigger)
+- `categories` — user-defined labels
+- `subscriptions` — recurring payments
+- `transactions` — one-off payment records
+- `notification_preferences` — per-user alert settings
+- `payment_alerts` — in-app notification records
 
-Use your SQL schema in Supabase SQL Editor, then confirm your generated types align with [src/types/database.types.ts](src/types/database.types.ts).
+Confirm your generated types align with [src/types/database.types.ts](src/types/database.types.ts).
 
 ## Environment Variables
 
@@ -94,6 +96,9 @@ Required:
 
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `RESEND_API_KEY` — from [resend.com/keys](https://resend.com/keys) (for payment alert emails)
+- `CRON_SECRET` — random secret token to protect the cron endpoint
+- `NEXT_PUBLIC_SITE_URL` — your production URL (used in alert emails)
 
 Notes:
 

@@ -10,6 +10,34 @@ export default async function Home() {
     redirect('/dashboard')
   }
 
+  // Fetch stats for landing page via public RPC function
+  let totalSubscriptions = 0
+  let avgYearlySavings = 0
+  let totalTrackingValue = 0
+
+  try {
+    const { data } = await supabase.rpc('get_landing_stats')
+    if (data) {
+      totalSubscriptions = Number(data.total_subscriptions) || 0
+      const totalMonthlySpending = Number(data.total_monthly_spending) || 0
+      avgYearlySavings = Math.round(totalMonthlySpending * 12 * 0.1)
+      totalTrackingValue = Math.round(totalMonthlySpending * 12)
+    }
+  } catch (error) {
+    console.error('Failed to fetch stats:', error)
+  }
+
+  // Use fetched data or defaults if empty
+  const displaySavings = avgYearlySavings > 0 ? `$${avgYearlySavings.toLocaleString()}` : '$847'
+  const displaySubscriptions = totalSubscriptions > 0 ? `${totalSubscriptions}+` : '12+'
+  const displayTracking = totalTrackingValue >= 1_000_000
+    ? `$${(totalTrackingValue / 1_000_000).toFixed(1)}M+`
+    : totalTrackingValue >= 1_000
+    ? `$${(totalTrackingValue / 1_000).toFixed(0)}K+`
+    : totalTrackingValue > 0
+    ? `$${totalTrackingValue.toLocaleString()}`
+    : '$2M+'
+
   return (
     <div className="min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
       {/* Gradient orbs */}
@@ -43,7 +71,7 @@ export default async function Home() {
         <div className="text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-gray-400 mb-8">
             <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse" />
-            Now tracking $2M+ in subscriptions
+            Now tracking {displayTracking} in subscriptions
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
@@ -79,11 +107,11 @@ export default async function Home() {
         {/* Stats */}
         <div className="grid grid-cols-3 gap-8 mt-24 max-w-3xl mx-auto">
           <div className="text-center">
-            <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">$847</div>
+            <div className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">{displaySavings}</div>
             <div className="text-gray-500 mt-1">Avg. yearly savings</div>
           </div>
           <div className="text-center border-x border-white/10">
-            <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">12+</div>
+            <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">{displaySubscriptions}</div>
             <div className="text-gray-500 mt-1">Subscriptions tracked</div>
           </div>
           <div className="text-center">

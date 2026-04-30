@@ -174,12 +174,101 @@ export type Database = {
           }
         ]
       }
+      notification_preferences: {
+        Row: {
+          user_id: string
+          email_enabled: boolean
+          alert_7_days: boolean
+          alert_3_days: boolean
+          alert_1_day: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          user_id: string
+          email_enabled?: boolean
+          alert_7_days?: boolean
+          alert_3_days?: boolean
+          alert_1_day?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          user_id?: string
+          email_enabled?: boolean
+          alert_7_days?: boolean
+          alert_3_days?: boolean
+          alert_1_day?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'notification_preferences_user_fkey'
+            columns: ['user_id']
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          }
+        ]
+      }
+      payment_alerts: {
+        Row: {
+          id: string
+          user_id: string
+          subscription_id: string
+          days_until_payment: number
+          message: string
+          dismissed: boolean
+          sent_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          subscription_id: string
+          days_until_payment: number
+          message: string
+          dismissed?: boolean
+          sent_at?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          subscription_id?: string
+          days_until_payment?: number
+          message?: string
+          dismissed?: boolean
+          sent_at?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'payment_alerts_user_fkey'
+            columns: ['user_id']
+            referencedRelation: 'profiles'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'payment_alerts_subscription_fkey'
+            columns: ['subscription_id']
+            referencedRelation: 'subscriptions'
+            referencedColumns: ['id']
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_landing_stats: {
+        Args: Record<string, never>
+        Returns: {
+          total_subscriptions: number
+          total_monthly_spending: number
+        }
+      }
     }
     Enums: {
       [_ in never]: never
@@ -192,11 +281,15 @@ export type Profile = Database['public']['Tables']['profiles']['Row']
 export type Category = Database['public']['Tables']['categories']['Row']
 export type Subscription = Database['public']['Tables']['subscriptions']['Row']
 export type Transaction = Database['public']['Tables']['transactions']['Row']
+export type NotificationPreferences = Database['public']['Tables']['notification_preferences']['Row']
+export type PaymentAlert = Database['public']['Tables']['payment_alerts']['Row']
 
 export type InsertProfile = Database['public']['Tables']['profiles']['Insert']
 export type InsertCategory = Database['public']['Tables']['categories']['Insert']
 export type InsertSubscription = Database['public']['Tables']['subscriptions']['Insert']
 export type InsertTransaction = Database['public']['Tables']['transactions']['Insert']
+export type InsertNotificationPreferences = Database['public']['Tables']['notification_preferences']['Insert']
+export type InsertPaymentAlert = Database['public']['Tables']['payment_alerts']['Insert']
 
 export type UpdateProfile = Database['public']['Tables']['profiles']['Update']
 export type UpdateCategory = Database['public']['Tables']['categories']['Update']

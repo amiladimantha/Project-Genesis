@@ -1,4 +1,5 @@
 import { getProfile } from '../actions/profile'
+import { getNotificationPreferences } from '../actions/notifications'
 import { SettingsClient } from './SettingsClient'
 import { redirect } from 'next/navigation'
 
@@ -9,6 +10,8 @@ export default async function SettingsPage() {
     redirect('/login')
   }
 
+  const { data: notificationPreferences } = await getNotificationPreferences()
+
   return (
     <main className="max-w-2xl mx-auto px-6 py-8">
       <div className="mb-8">
@@ -16,7 +19,7 @@ export default async function SettingsPage() {
         <p className="text-gray-400 mt-1">Manage your account preferences</p>
       </div>
 
-      <SettingsClient profile={profile} />
+      <SettingsClient profile={profile} notificationPreferences={notificationPreferences} />
     </main>
   )
 }

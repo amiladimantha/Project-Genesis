@@ -3,12 +3,14 @@ import { redirect } from 'next/navigation'
 import { getSubscriptions, getSubscriptionStats } from './actions/subscriptions'
 import { getCategories } from './actions/categories'
 import { getMonthlySpendingTrend, getCategorySpending } from './actions/transactions'
+import { getPendingAlerts } from './actions/notifications'
 import { SubscriptionsList } from './components/SubscriptionsList'
 import { CategoriesList } from './components/CategoriesList'
 import { AddButtons } from './components/AddButtons'
 import { SpendingPieChart } from './components/SpendingPieChart'
 import { SpendingTrendChart } from './components/SpendingTrendChart'
 import { UpcomingPayments } from './components/UpcomingPayments'
+import { PaymentAlerts } from './components/PaymentAlerts'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -20,12 +22,13 @@ export default async function DashboardPage() {
     redirect('/login')
   }
 
-  const [subscriptionsResult, categoriesResult, statsResult, trendResult, categorySpendingResult] = await Promise.all([
+  const [subscriptionsResult, categoriesResult, statsResult, trendResult, categorySpendingResult, alertsResult] = await Promise.all([
     getSubscriptions(),
     getCategories(),
     getSubscriptionStats(),
     getMonthlySpendingTrend(),
     getCategorySpending(),
+    getPendingAlerts(),
   ])
 
   const subscriptions = subscriptionsResult.data || []
@@ -33,6 +36,7 @@ export default async function DashboardPage() {
   const stats = statsResult.data || { monthlySpending: 0, upcomingPayments: 0, activeCount: 0 }
   const trendData = trendResult.data || []
   const categorySpending = categorySpendingResult.data || []
+  const pendingAlerts = alertsResult.data || []
 
   function formatCurrency(amount: number) {
     return new Intl.NumberFormat('en-US', {
@@ -48,6 +52,9 @@ export default async function DashboardPage() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <p className="text-gray-400 mt-1">Track and manage your subscriptions</p>
       </div>
+
+      {/* Payment Alerts */}
+      <PaymentAlerts initialAlerts={pendingAlerts} />
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">

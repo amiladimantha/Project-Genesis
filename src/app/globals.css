@@ -27,21 +27,39 @@ body {
 
 /* Light mode overrides for existing dark-first utility usage */
 html.light-mode {
-  --background: #f3f6fb;
+  --background: #f5f7fb;
   --foreground: #0f172a;
 }
 
 html.light-mode body {
-  background: linear-gradient(180deg, #f8fbff 0%, #eef3fa 100%);
+  background: linear-gradient(135deg, #fafbfc 0%, #f0f4f9 50%, #e8f0f8 100%);
   color: #0f172a;
+  position: relative;
+  z-index: 1;
+}
+
+/* Animated gradient orbs for light mode */
+html.light-mode::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle 700px at 15% 30%, rgba(99, 102, 241, 0.12) 0%, transparent 80%),
+    radial-gradient(circle 700px at 85% 85%, rgba(168, 85, 247, 0.12) 0%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 html.light-mode .bg-\[\#0a0a0f\] {
-  background-color: #f3f6fb !important;
+  background-color: #f5f7fb !important;
 }
 
 html.light-mode .bg-\[\#0a0a0f\]\/80 {
-  background-color: rgba(243, 246, 251, 0.88) !important;
+  background-color: rgba(245, 247, 251, 0.92) !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 html.light-mode .text-white {
@@ -49,33 +67,99 @@ html.light-mode .text-white {
 }
 
 html.light-mode .text-gray-400 {
-  color: #64748b !important;
+  color: #6b7280 !important;
 }
 
 html.light-mode .text-gray-500 {
-  color: #94a3b8 !important;
+  color: #9ca3af !important;
+}
+
+html.light-mode .text-gray-300 {
+  color: #4b5563 !important;
 }
 
 html.light-mode .bg-white\/5 {
-  background-color: rgba(15, 23, 42, 0.04) !important;
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06) !important;
 }
 
 html.light-mode .bg-white\/10 {
-  background-color: rgba(15, 23, 42, 0.08) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(12px) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
 }
 
 html.light-mode .border-white\/10 {
-  border-color: rgba(15, 23, 42, 0.14) !important;
+  border-color: rgba(99, 102, 241, 0.15) !important;
 }
 
 html.light-mode .border-white\/20 {
-  border-color: rgba(15, 23, 42, 0.22) !important;
+  border-color: rgba(99, 102, 241, 0.25) !important;
 }
 
 html.light-mode .hover\:bg-white\/5:hover {
-  background-color: rgba(15, 23, 42, 0.06) !important;
+  background-color: rgba(255, 255, 255, 0.75) !important;
 }
 
 html.light-mode .hover\:bg-white\/10:hover {
-  background-color: rgba(15, 23, 42, 0.1) !important;
+  background-color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Light mode button enhancements */
+html.light-mode .bg-gradient-to-r {
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.25) !important;
+}
+
+html.light-mode .bg-gradient-to-r:hover {
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35) !important;
+}
+
+/* Header styling for light mode */
+html.light-mode header {
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom-color: rgba(99, 102, 241, 0.1) !important;
+}
+
+/* Input styling for light mode */
+html.light-mode input,
+html.light-mode select,
+html.light-mode textarea {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  color: #0f172a !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+html.light-mode input::placeholder,
+html.light-mode textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+html.light-mode input:focus,
+html.light-mode select:focus,
+html.light-mode textarea:focus {
+  border-color: rgb(99, 102, 241) !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+}
+
+html.light-mode .text-gray-200 {
+  color: #4b5563 !important;
+}
+
+/* Dropdown panel theme-aware styling */
+.dropdown-panel {
+  background-color: rgba(15, 23, 42, 0.8) !important;
+}
+
+html.light-mode .dropdown-panel {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.dropdown-item {
+  color: #d1d5db;
+}
+
+html.light-mode .dropdown-item {
+  color: #374151;
 }

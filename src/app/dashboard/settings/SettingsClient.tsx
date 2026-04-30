@@ -3,14 +3,17 @@
 import { useEffect, useRef, useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { updateProfile, updatePassword, deleteAccount } from '../actions/profile'
+import { NotificationPreferencesPanel } from '../components/NotificationPreferencesPanel'
 import { supportedCurrencies } from '@/lib/currency'
 import type { Profile } from '@/types/database.types'
+import type { NotificationPreferences } from '../actions/notifications'
 
 interface SettingsClientProps {
   profile: Profile
+  notificationPreferences?: NotificationPreferences | null
 }
 
-export function SettingsClient({ profile }: SettingsClientProps) {
+export function SettingsClient({ profile, notificationPreferences }: SettingsClientProps) {
   const [isPending, startTransition] = useTransition()
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [selectedCurrency, setSelectedCurrency] = useState(profile.currency || 'USD')
@@ -90,9 +93,9 @@ export function SettingsClient({ profile }: SettingsClientProps) {
       )}
 
       {/* Profile Section */}
-      <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+      <div className="p-6 bg-white/5 border border-white/10 rounded-2xl relative z-20">
         <h2 className="text-lg font-semibold text-white mb-4">Profile</h2>
-        <form action={handleProfileUpdate} className="space-y-4">
+        <form action={handleProfileUpdate} className="space-y-4 overflow-visible">
           <div>
             <label className="block text-sm text-gray-400 mb-2">Email</label>
             <input
@@ -115,7 +118,7 @@ export function SettingsClient({ profile }: SettingsClientProps) {
           <div>
             <label className="block text-sm text-gray-400 mb-2">Default Currency</label>
             <input type="hidden" name="currency" value={selectedCurrency} />
-            <div ref={currencyDropdownRef} className="relative">
+            <div ref={currencyDropdownRef} className="relative z-30">
               <button
                 type="button"
                 onClick={() => setIsCurrencyOpen((prev) => !prev)}
@@ -133,7 +136,7 @@ export function SettingsClient({ profile }: SettingsClientProps) {
               </button>
 
               {isCurrencyOpen && (
-                <div className="absolute z-30 mt-2 w-full max-h-56 overflow-y-auto rounded-xl border border-white/15 bg-[#131520] shadow-2xl backdrop-blur-xl">
+                <div className="absolute z-50 bottom-full mb-2 w-full max-h-56 overflow-y-auto rounded-xl border border-white/15 dropdown-panel shadow-2xl backdrop-blur-xl">
                   {supportedCurrencies.map((curr) => (
                     <button
                       key={curr}
@@ -142,10 +145,10 @@ export function SettingsClient({ profile }: SettingsClientProps) {
                         setSelectedCurrency(curr)
                         setIsCurrencyOpen(false)
                       }}
-                      className={`w-full px-4 py-2.5 text-left transition ${
+                      className={`w-full px-4 py-2.5 text-left transition dropdown-item ${
                         selectedCurrency === curr
-                          ? 'bg-purple-500/20 text-purple-200'
-                          : 'text-gray-200 hover:bg-white/10'
+                          ? 'bg-purple-500/30 text-purple-300'
+                          : 'hover:bg-white/10'
                       }`}
                     >
                       {curr}
@@ -200,6 +203,11 @@ export function SettingsClient({ profile }: SettingsClientProps) {
           </button>
         </form>
       </div>
+
+      {/* Notification Preferences Section */}
+      {notificationPreferences && (
+        <NotificationPreferencesPanel initialPreferences={notificationPreferences} />
+      )}
 
       {/* Danger Zone */}
       <div className="p-6 bg-red-500/5 border border-red-500/20 rounded-2xl">
