@@ -102,7 +102,7 @@ export function SearchFilters({ categories, onFilterChange }: SearchFiltersProps
               <select
                 value={filters.status}
                 onChange={(e) => handleChange('status', e.target.value)}
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm"
+                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
               >
                 <option value="">All</option>
                 <option value="active">Active</option>
@@ -115,7 +115,7 @@ export function SearchFilters({ categories, onFilterChange }: SearchFiltersProps
               <select
                 value={filters.category}
                 onChange={(e) => handleChange('category', e.target.value)}
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm"
+                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
               >
                 <option value="">All</option>
                 {categories.map((cat) => (

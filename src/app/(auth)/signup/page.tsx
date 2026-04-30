@@ -24,7 +24,7 @@ export default async function SignupPage({
 
         <div className="p-8 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm">
           <h1 className="text-2xl font-bold text-center mb-2">Create account</h1>
-          <p className="text-gray-400 text-center mb-8">Start your free trial today</p>
+          <p className="text-gray-400 text-center mb-8">Join thousands of users managing their subscriptions</p>
 
           <form className="space-y-5">
             <div>

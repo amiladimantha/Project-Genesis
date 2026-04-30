@@ -147,19 +147,65 @@ html.light-mode .text-gray-200 {
   color: #4b5563 !important;
 }
 
-/* Dropdown panel theme-aware styling */
+/* ------------------------------------------------------------------ */
+/* Dropdown & Select — theme-aware styling                             */
+/* ------------------------------------------------------------------ */
+
+/* Dark mode: tell the browser the colour scheme so native <select>
+   popups also render with a dark background and light text */
+:root {
+  color-scheme: dark;
+}
+
+html.light-mode {
+  color-scheme: light;
+}
+
+/* Native <select> and <option> explicit colours ------------------- */
+select {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+select option {
+  background-color: #1e1e2e;
+  color: #e2e8f0;
+}
+
+html.light-mode select {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  color: #0f172a !important;
+}
+
+html.light-mode select option {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+/* Custom dropdown panel (currency picker in Settings) -------------- */
 .dropdown-panel {
-  background-color: rgba(15, 23, 42, 0.8) !important;
+  background-color: rgba(15, 23, 42, 0.95) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 html.light-mode .dropdown-panel {
-  background-color: rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(255, 255, 255, 0.97) !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
 }
 
 .dropdown-item {
   color: #d1d5db;
 }
 
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
 html.light-mode .dropdown-item {
-  color: #374151;
+  color: #1e293b;
+}
+
+html.light-mode .dropdown-item:hover {
+  background-color: rgba(99, 102, 241, 0.08);
 }

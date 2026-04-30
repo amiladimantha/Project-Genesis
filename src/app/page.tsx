@@ -90,16 +90,10 @@ export default async function Home() {
               href="/signup"
               className="group px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 font-semibold rounded-full hover:opacity-90 transition flex items-center justify-center gap-2"
             >
-              Start Free Trial
+              Get Started
               <svg className="w-4 h-4 group-hover:translate-x-1 transition" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </Link>
-            <Link
-              href="/login"
-              className="px-8 py-4 bg-white/5 border border-white/10 font-semibold rounded-full hover:bg-white/10 transition"
-            >
-              View Demo
             </Link>
           </div>
         </div>
