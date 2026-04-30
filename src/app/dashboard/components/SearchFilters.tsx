@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import type { Category } from '@/types/database.types'
+import { Select } from '@/components/Select'
 
 interface SearchFiltersProps {
   categories: Category[]
@@ -99,31 +100,27 @@ export function SearchFilters({ categories, onFilterChange }: SearchFiltersProps
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm text-gray-400 mb-1">Status</label>
-              <select
+              <Select
                 value={filters.status}
-                onChange={(e) => handleChange('status', e.target.value)}
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
-              >
-                <option value="">All</option>
-                <option value="active">Active</option>
-                <option value="paused">Paused</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
+                onChange={(value) => handleChange('status', value)}
+                options={[
+                  { value: '', label: 'All' },
+                  { value: 'active', label: 'Active' },
+                  { value: 'paused', label: 'Paused' },
+                  { value: 'cancelled', label: 'Cancelled' },
+                ]}
+              />
             </div>
             <div>
               <label className="block text-sm text-gray-400 mb-1">Category</label>
-              <select
+              <Select
                 value={filters.category}
-                onChange={(e) => handleChange('category', e.target.value)}
-                className="w-full px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-white text-sm outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
-              >
-                <option value="">All</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
+                onChange={(value) => handleChange('category', value)}
+                options={[
+                  { value: '', label: 'All' },
+                  ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+                ]}
+              />
             </div>
             <div>
               <label className="block text-sm text-gray-400 mb-1">Min Amount</label>

@@ -1,9 +1,10 @@
 'use client'
 
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { createSubscription, updateSubscription } from '@/app/dashboard/actions/subscriptions'
 import type { Subscription, Category } from '@/types/database.types'
+import { Select } from '@/components/Select'
 
 interface SubscriptionFormProps {
   subscription?: Subscription
@@ -15,6 +16,11 @@ export function SubscriptionForm({ subscription, categories, onClose }: Subscrip
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const isEditing = !!subscription
+
+  const [currency, setCurrency] = useState(subscription?.currency || 'USD')
+  const [billingCycle, setBillingCycle] = useState(subscription?.billing_cycle || 'monthly')
+  const [categoryId, setCategoryId] = useState(subscription?.category_id || '')
+  const [status, setStatus] = useState(subscription?.status || 'active')
 
   async function handleSubmit(formData: FormData) {
     startTransition(async () => {
@@ -72,18 +78,19 @@ export function SubscriptionForm({ subscription, categories, onClose }: Subscrip
           <label htmlFor="currency" className={labelClass}>
             Currency
           </label>
-          <select
+          <Select
             id="currency"
             name="currency"
-            defaultValue={subscription?.currency || 'USD'}
-            className={inputClass}
-          >
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-            <option value="GBP">GBP</option>
-            <option value="CAD">CAD</option>
-            <option value="AUD">AUD</option>
-          </select>
+            value={currency}
+            onChange={setCurrency}
+            options={[
+              { value: 'USD', label: 'USD' },
+              { value: 'EUR', label: 'EUR' },
+              { value: 'GBP', label: 'GBP' },
+              { value: 'CAD', label: 'CAD' },
+              { value: 'AUD', label: 'AUD' },
+            ]}
+          />
         </div>
       </div>
 
@@ -92,17 +99,18 @@ export function SubscriptionForm({ subscription, categories, onClose }: Subscrip
           <label htmlFor="billing_cycle" className={labelClass}>
             Billing Cycle
           </label>
-          <select
+          <Select
             id="billing_cycle"
             name="billing_cycle"
             required
-            defaultValue={subscription?.billing_cycle || 'monthly'}
-            className={inputClass}
-          >
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
-          </select>
+            value={billingCycle as string}
+            onChange={(v) => setBillingCycle(v as 'weekly' | 'monthly' | 'yearly')}
+            options={[
+              { value: 'weekly', label: 'Weekly' },
+              { value: 'monthly', label: 'Monthly' },
+              { value: 'yearly', label: 'Yearly' },
+            ]}
+          />
         </div>
         <div>
           <label htmlFor="next_payment_date" className={labelClass}>
@@ -123,19 +131,16 @@ export function SubscriptionForm({ subscription, categories, onClose }: Subscrip
         <label htmlFor="category_id" className={labelClass}>
           Category
         </label>
-        <select
+        <Select
           id="category_id"
           name="category_id"
-          defaultValue={subscription?.category_id || ''}
-          className={inputClass}
-        >
-          <option value="">No Category</option>
-          {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
+          value={categoryId}
+          onChange={setCategoryId}
+          options={[
+            { value: '', label: 'No Category' },
+            ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+          ]}
+        />
       </div>
 
       {isEditing && (
@@ -143,16 +148,17 @@ export function SubscriptionForm({ subscription, categories, onClose }: Subscrip
           <label htmlFor="status" className={labelClass}>
             Status
           </label>
-          <select
+          <Select
             id="status"
             name="status"
-            defaultValue={subscription?.status}
-            className={inputClass}
-          >
-            <option value="active">Active</option>
-            <option value="paused">Paused</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+            value={status as string}
+            onChange={(v) => setStatus(v as 'active' | 'paused' | 'cancelled')}
+            options={[
+              { value: 'active', label: 'Active' },
+              { value: 'paused', label: 'Paused' },
+              { value: 'cancelled', label: 'Cancelled' },
+            ]}
+          />
         </div>
       )}
 

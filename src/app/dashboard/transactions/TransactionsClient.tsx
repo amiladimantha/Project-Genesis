@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { format } from 'date-fns'
 import { createTransaction, deleteTransaction } from '../actions/transactions'
 import { Modal } from '../components/Modal'
+import { Select } from '@/components/Select'
 import type { Transaction, Category, Subscription } from '@/types/database.types'
 
 type TransactionWithRelations = Transaction & {
@@ -21,6 +22,8 @@ interface TransactionsClientProps {
 export function TransactionsClient({ transactions, categories, subscriptions }: TransactionsClientProps) {
   const [showForm, setShowForm] = useState(false)
   const [isPending, startTransition] = useTransition()
+  const [categoryId, setCategoryId] = useState('')
+  const [subscriptionId, setSubscriptionId] = useState('')
   const router = useRouter()
 
   async function handleSubmit(formData: FormData) {
@@ -30,6 +33,8 @@ export function TransactionsClient({ transactions, categories, subscriptions }: 
         alert(result.error)
       } else {
         setShowForm(false)
+        setCategoryId('')
+        setSubscriptionId('')
         router.refresh()
       }
     })
@@ -161,21 +166,27 @@ export function TransactionsClient({ transactions, categories, subscriptions }: 
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Category</label>
-            <select name="category_id" className={inputClass}>
-              <option value="">No Category</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>{cat.name}</option>
-              ))}
-            </select>
+            <Select
+              name="category_id"
+              value={categoryId}
+              onChange={setCategoryId}
+              options={[
+                { value: '', label: 'No Category' },
+                ...categories.map((cat) => ({ value: cat.id, label: cat.name })),
+              ]}
+            />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-300 mb-2">Related Subscription (optional)</label>
-            <select name="subscription_id" className={inputClass}>
-              <option value="">None</option>
-              {subscriptions.map((sub) => (
-                <option key={sub.id} value={sub.id}>{sub.name}</option>
-              ))}
-            </select>
+            <Select
+              name="subscription_id"
+              value={subscriptionId}
+              onChange={setSubscriptionId}
+              options={[
+                { value: '', label: 'None' },
+                ...subscriptions.map((sub) => ({ value: sub.id, label: sub.name })),
+              ]}
+            />
           </div>
           <div className="flex gap-3 pt-4">
             <button

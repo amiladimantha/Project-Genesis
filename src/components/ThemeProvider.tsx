@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
+import { LoadingProvider } from './LoadingProvider'
 
 type Theme = 'dark' | 'light'
 
@@ -36,7 +37,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      {children}
+      <LoadingProvider>{children}</LoadingProvider>
     </ThemeContext.Provider>
   )
 }

@@ -35,7 +35,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
         onClick={onClose}
         aria-hidden="true"
       />
-      <div className="relative bg-[#12121a] border border-white/10 rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6">
+      <div className="modal-content relative bg-[#12121a] border border-white/10 rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-white">{title}</h2>
           <button

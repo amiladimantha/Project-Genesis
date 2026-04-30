@@ -1,10 +1,11 @@
 'use client'
 
-import { useEffect, useRef, useState, useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { updateProfile, updatePassword, deleteAccount } from '../actions/profile'
 import { NotificationPreferencesPanel } from '../components/NotificationPreferencesPanel'
 import { supportedCurrencies } from '@/lib/currency'
+import { Select } from '@/components/Select'
 import type { Profile } from '@/types/database.types'
 import type { NotificationPreferences } from '../actions/notifications'
 
@@ -17,8 +18,6 @@ export function SettingsClient({ profile, notificationPreferences }: SettingsCli
   const [isPending, startTransition] = useTransition()
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
   const [selectedCurrency, setSelectedCurrency] = useState(profile.currency || 'USD')
-  const [isCurrencyOpen, setIsCurrencyOpen] = useState(false)
-  const currencyDropdownRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
   const inputClass = "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none text-white placeholder-gray-500 transition"
@@ -66,18 +65,6 @@ export function SettingsClient({ profile, notificationPreferences }: SettingsCli
     })
   }
 
-  useEffect(() => {
-    function handleOutsideClick(event: MouseEvent) {
-      if (!currencyDropdownRef.current) return
-      if (!currencyDropdownRef.current.contains(event.target as Node)) {
-        setIsCurrencyOpen(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleOutsideClick)
-    return () => document.removeEventListener('mousedown', handleOutsideClick)
-  }, [])
-
   return (
     <div className="space-y-8">
       {message && (
@@ -117,46 +104,12 @@ export function SettingsClient({ profile, notificationPreferences }: SettingsCli
           </div>
           <div>
             <label className="block text-sm text-gray-400 mb-2">Default Currency</label>
-            <input type="hidden" name="currency" value={selectedCurrency} />
-            <div ref={currencyDropdownRef} className="relative z-30">
-              <button
-                type="button"
-                onClick={() => setIsCurrencyOpen((prev) => !prev)}
-                className={`${inputClass} flex items-center justify-between`}
-              >
-                <span>{selectedCurrency}</span>
-                <svg
-                  className={`w-5 h-5 text-gray-400 transition-transform ${isCurrencyOpen ? 'rotate-180' : ''}`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {isCurrencyOpen && (
-                <div className="absolute z-50 bottom-full mb-2 w-full max-h-56 overflow-y-auto rounded-xl border border-white/15 dropdown-panel shadow-2xl backdrop-blur-xl">
-                  {supportedCurrencies.map((curr) => (
-                    <button
-                      key={curr}
-                      type="button"
-                      onClick={() => {
-                        setSelectedCurrency(curr)
-                        setIsCurrencyOpen(false)
-                      }}
-                      className={`w-full px-4 py-2.5 text-left transition dropdown-item ${
-                        selectedCurrency === curr
-                          ? 'bg-purple-500/30 text-purple-300'
-                          : 'hover:bg-white/10'
-                      }`}
-                    >
-                      {curr}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+            <Select
+              name="currency"
+              value={selectedCurrency}
+              onChange={setSelectedCurrency}
+              options={supportedCurrencies.map((curr) => ({ value: curr, label: curr }))}
+            />
           </div>
           <button
             type="submit"

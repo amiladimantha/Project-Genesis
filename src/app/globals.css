@@ -189,9 +189,9 @@ html.light-mode select option {
 }
 
 html.light-mode .dropdown-panel {
-  background-color: rgba(255, 255, 255, 0.97) !important;
-  border-color: rgba(99, 102, 241, 0.2) !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12) !important;
+  background-color: #ffffff !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
 }
 
 .dropdown-item {
@@ -207,5 +207,107 @@ html.light-mode .dropdown-item {
 }
 
 html.light-mode .dropdown-item:hover {
-  background-color: rgba(99, 102, 241, 0.08);
+  background-color: rgba(99, 102, 241, 0.12);
+}
+
+/* Select trigger button for light mode */
+html.light-mode button[aria-haspopup="listbox"] {
+  background-color: #ffffff !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+  color: #0f172a !important;
+}
+
+html.light-mode button[aria-haspopup="listbox"] span {
+  color: #0f172a !important;
+}
+
+html.light-mode button[aria-haspopup="listbox"] svg {
+  color: #6b7280 !important;
+}
+
+/* Selected item styling in light mode - ensure good contrast */
+html.light-mode .dropdown-item[aria-selected="true"] {
+  background-color: rgba(99, 102, 241, 0.15) !important;
+  color: #4f46e5 !important;
+  font-weight: 500;
+}
+
+/* ================================================================== */
+/* Modal panel styling for light mode                                 */
+/* ================================================================== */
+
+.modal-content {
+  background-color: #12121a;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+html.light-mode .modal-content {
+  background-color: #ffffff !important;
+  border-color: rgba(99, 102, 241, 0.2) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.light-mode .modal-content h2 {
+  color: #0f172a !important;
+}
+
+html.light-mode .modal-content button[aria-label="Close"] {
+  color: #6b7280 !important;
+}
+
+html.light-mode .modal-content button[aria-label="Close"]:hover {
+  color: #111827 !important;
+}
+
+/* Form elements inside modals in light mode */
+html.light-mode .modal-content input[type="text"],
+html.light-mode .modal-content input[type="email"],
+html.light-mode .modal-content input[type="password"],
+html.light-mode .modal-content textarea {
+  background-color: rgba(249, 250, 251, 0.9) !important;
+  border-color: rgba(99, 102, 241, 0.25) !important;
+  color: #0f172a !important;
+}
+
+html.light-mode .modal-content input[type="text"]::placeholder,
+html.light-mode .modal-content textarea::placeholder {
+  color: #a3a5ab !important;
+}
+
+html.light-mode .modal-content button {
+  color: inherit;
+}
+
+html.light-mode .modal-content .bg-gradient-to-r {
+  background: linear-gradient(to right, rgb(99, 102, 241), rgb(168, 85, 247)) !important;
+  color: #ffffff !important;
+}
+
+/* ================================================================== */
+/* Mobile drawer (MobileNav)                                          */
+/* ================================================================== */
+
+.mobile-drawer {
+  background-color: #0a0a0f;
+}
+
+html.light-mode .mobile-drawer {
+  background-color: #ffffff !important;
+  border-left-color: rgba(99, 102, 241, 0.2) !important;
+}
+
+html.light-mode .mobile-drawer .text-white {
+  color: #0f172a !important;
+}
+
+html.light-mode .mobile-drawer .text-gray-400 {
+  color: #6b7280 !important;
+}
+
+html.light-mode .mobile-drawer .text-gray-500 {
+  color: #9ca3af !important;
+}
+
+html.light-mode .mobile-drawer .border-white\/10 {
+  border-color: rgba(99, 102, 241, 0.15) !important;
 }
